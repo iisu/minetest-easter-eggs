@@ -45,27 +45,35 @@ function get_sp(player)			--get satiation points (hunger) of a player
 	return 0
 end
 
+function eat_egg(itemstack, player, pointed_thing)
+	if SO_ENABLED and get_sp(player) >= MAX_SP then
+		local name = player:get_player_name()
+		
+		if so_affected_players[name] == nil then
+			minetest.after(1, sugar_overdose, player)
+		end
+		
+		so_affected_players[name] = SO_DURATION
+		
+		minetest.after(SO_DURATION, function(player)
+			player:set_hp(player:get_hp() - SO_DAMAGE)
+		end, player)
+	end
+		
+	itemstack = minetest.do_item_eat(HP_CHANGE, nil, itemstack, player, pointed_thing)
+	return itemstack
+end
+
 minetest.register_craftitem("easter_eggs:chocolate_egg", {
 	description = "Chocolate egg",
 	inventory_image = "easter_eggs_chocolate_egg.png",
-	on_use = function(itemstack, player, pointed_thing)
-		if SO_ENABLED and get_sp(player) >= MAX_SP then
-			local name = player:get_player_name()
-			
-			if so_affected_players[name] == nil then
-				minetest.after(1, sugar_overdose, player)
-			end
-			
-			so_affected_players[name] = SO_DURATION
-			
-			minetest.after(SO_DURATION, function(player)
-				player:set_hp(player:get_hp() - SO_DAMAGE)
-			end, player)
-		end
-			
-		itemstack = minetest.do_item_eat(HP_CHANGE, nil, itemstack, player, pointed_thing)
-		return itemstack
-	end
+	on_use = eat_egg
+})
+
+minetest.register_craftitem("easter_eggs:chocolate_egg_dark", {
+	description = "Dark chocolate egg",
+	inventory_image = "easter_eggs_chocolate_egg_dark.png",
+	on_use = eat_egg	
 })
 
 minetest.register_node("easter_eggs:chocolate_block", {
@@ -76,7 +84,7 @@ minetest.register_node("easter_eggs:chocolate_block", {
 })
 
 minetest.register_node("easter_eggs:chocolate_block_dark", {
-	description = "Dark Chocolate block",
+	description = "Dark chocolate block",
 	tiles = {"easter_eggs_chocolate_block_dark.png"},
 	groups = {oddly_breakable_by_hand = 3}
 })
@@ -91,9 +99,25 @@ minetest.register_craft({
 })
 
 minetest.register_craft({
+	output = "easter_eggs:chocolate_block_dark",
+	recipe = {
+		{ "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark" },
+		{ "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark" },
+		{ "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark" }
+	}
+})
+
+minetest.register_craft({
 	output = "easter_eggs:chocolate_egg 9",
 	recipe = {
 		{ "easter_eggs:chocolate_block" }
+	}
+})
+
+minetest.register_craft({
+	output = "easter_eggs:chocolate_egg_dark 9",
+	recipe = {
+		{ "easter_eggs:chocolate_block_dark" }
 	}
 })
 
@@ -143,7 +167,9 @@ function easter_eggs_spawn()
 	local f
 	
 	for _, player in ipairs(minetest.get_connected_players()) do
-		item = "easter_eggs:" .. (math.random(100) == 1 and "gold_egg" or "chocolate_egg")
+		item = "easter_eggs:" .. (math.random(100) == 1 and "gold_egg" or (
+			math.random(2) == 1 and "chocolate_egg" or "chocolate_egg_dark"
+		))
 		
 		pos = player:getpos()
 		pos_r = math.random()												-- 0 <= pos_r <= 1
