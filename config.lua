@@ -1,3 +1,6 @@
+USE_OBJ = true		--whether to use the .obj 3d model for the gold egg node
+					--disabling this option will use a fallback plantlike drawtype
+
 --chocolate egg config
 HP_CHANGE = 3		--hp (or sp) healed with a single egg
 

@@ -123,13 +123,13 @@ minetest.register_craft({
 
 minetest.register_node("easter_eggs:gold_egg", {
 	description = "Gold egg",
-	drawtype = "mesh",
+	drawtype = USE_OBJ and "mesh" or "plantlike",
 	mesh = "easter_eggs_gold_egg.obj",
-	tiles = { "easter_eggs_gold.png" },
+	tiles = USE_OBJ and { "easter_eggs_gold.png" } or { "easter_eggs_gold_egg.png" },
 	groups = { oddly_breakable_by_hand = 3 },
 	paramtype = "light",
-	inventory_image = "easter_eggs_gold_egg.png",
-	wield_image = "easter_eggs_gold_egg.png",
+	inventory_image = "easter_eggs_gold_egg_wielditem.png",
+	wield_image = "easter_eggs_gold_egg_wielditem.png",
 	on_use = function(itemstack, player, pointed_thing)
 		local item
 		minetest.do_item_eat(0, nil, itemstack, player, pointed_thing)
