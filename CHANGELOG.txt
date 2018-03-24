@@ -1,3 +1,9 @@
+v. 1.0
+- Renamed 'sugar overdose' to 'sugar rush'
+- Moved golden eggs' loot pool config to loot_pool.lua
+- Minor changes to README.md
+- Added stairs etc.
+
 v. 0.2.1
 - Added dark chocolate.
 
@@ -6,7 +12,6 @@ v. 0.2
 - Added feature to spawn eggs randomly nearby players.
 
 v. 0.1
------------------------
 - Split 'sugar overdose' effect into a two phase process: first the speedup effect takes place and then the damage is dealt.
 - Updated README.md file.
 - Added support for Wuzzy's hbhunger mod.

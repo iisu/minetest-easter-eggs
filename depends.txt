@@ -2,3 +2,6 @@ default
 hud?
 hunger?
 hbhunger?
+stairs?
+stairsplus?
+walls?

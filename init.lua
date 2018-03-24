@@ -1,4 +1,10 @@
+--[[
+	Easter Eggs Mod for Minetest. Adds easter-themed custom items.
+	Homepage: https://github.com/iisu/minetest-easter-eggs
+]]
+
 dofile(minetest.get_modpath("easter_eggs") .. "/config.lua")
+dofile(minetest.get_modpath("easter_eggs") .. "/loot_pool.lua")
 so_affected_players = {}
 
 lp_index = {}
@@ -6,7 +12,7 @@ for i, _ in pairs(loot_pool) do
 	table.insert(lp_index, i)
 end
 
-function sugar_overdose(player)
+function sugar_rush(player)
 	local name = player:get_player_name()
 	
 	if so_affected_players[name] == nil then
@@ -15,7 +21,7 @@ function sugar_overdose(player)
 	end
 	
 	player:set_physics_override({ speed = SO_SPEEDUP })
-	minetest.after(1, sugar_overdose, player)
+	minetest.after(1, sugar_rush, player)
 	so_affected_players[name] = so_affected_players[name] - 1
 	
 	if so_affected_players[name] < 1 then
@@ -50,7 +56,7 @@ function eat_egg(itemstack, player, pointed_thing)
 		local name = player:get_player_name()
 		
 		if so_affected_players[name] == nil then
-			minetest.after(1, sugar_overdose, player)
+			minetest.after(1, sugar_rush, player)
 		end
 		
 		so_affected_players[name] = SO_DURATION
@@ -80,13 +86,15 @@ minetest.register_node("easter_eggs:chocolate_block", {
 	description = "Chocolate block",
 	drawtype = "normal",
 	tiles = { "easter_eggs_chocolate_block.png" },
-	groups = { oddly_breakable_by_hand = 3 }
+	groups = { oddly_breakable_by_hand = 3 },
+	sounds = default.node_sound_defaults()
 })
 
 minetest.register_node("easter_eggs:chocolate_block_dark", {
 	description = "Dark chocolate block",
 	tiles = {"easter_eggs_chocolate_block_dark.png"},
-	groups = {oddly_breakable_by_hand = 3}
+	groups = {oddly_breakable_by_hand = 3},
+	sounds = default.node_sound_defaults()
 })
 
 minetest.register_craft({
@@ -198,3 +206,5 @@ if ES_ENABLED then
 		minetest.after(math.random() * item_entity_ttl, easter_eggs_spawn)
 	end
 end
+
+dofile(minetest.get_modpath("easter_eggs") .. "/stairs.lua")

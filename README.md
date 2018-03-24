@@ -2,26 +2,27 @@
 
 Easter Eggs Mod for Minetest. Adds some easter-themed custom items.
 
-Supported hunger mods:
+Supported hunger mods (for chocolate eggs):
 * <https://github.com/BlockMen/hunger>
 * <https://github.com/tenplus1/hud_hunger>
 * <http://repo.or.cz/w/minetest_hbhunger.git>
 
 ## Installation
 
-To install, just clone this repository into your "mods" directory.
+To install, just clone this repository into your mods directory.
 
 ## Configuration
-_config.lua_ stores some configuration that allows to customize this mod.
+_config.lua_ stores some configuration that allows to customize this mod
+(for golden eggs there's also a )
 
 One important setting is the variable _MAX_SP_ - maximum value of satiation
-(aka hunger). Different hunger mods may have different values for this and
-_MAX_SP_ should be set appropriately. Player should encounter 'sugar overdose'
-effect if and only if player's hunger bar is full before he uses the chocolate egg.
+(aka hunger). Different hunger mods may use different scales for satiation
+and _MAX_SP_ should be set appropriately. Eating the chocolate egg on a full
+hunger bar should result in a 'sugar rush' effect (implemented in the mod).
 
-In case of any further problems with 'sugar overdose' effect please consult
-_get_sp()_ function from _init.lua_ and your hunger mod's source code.  
-'Sugar overdose' isn't supposed to work at all if no supported hunger mod
+In case of problems with getting 'sugar rush' to work properly, you might
+need to tweak _get_sp()_ from _init.lua_ to work with your hunger mod.
+'Sugar rush' is not supposed to work at all if no supported hunger mod
 is detected. If it does, rejoice. If it does work but works incorrectly
 and setting _MAX_SP_ doesn't help, _SO_ENABLED = false_ flag setting disables
 the feature completely.
