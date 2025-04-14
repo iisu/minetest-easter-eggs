@@ -3,5 +3,5 @@ hud?
 hunger?
 hbhunger?
 stairs?
-stairsplus?
+moreblocks?
 walls?

@@ -1,57 +1,39 @@
 if minetest.global_exists("stairsplus") then
-	stairsplus.register_stair_and_slab_and_panel_and_micro(
-		"easter_eggs", "chocolate", "easter_eggs:chocolate_block",
-		{oddly_breakable_by_hand = 3},
-		{"easter_eggs_chocolate_block.png"},
-		"Chocolate Stairs",
-		"Chocolate Corner",
-		"Chocolate Slab",
-		"Chocolate Wall",
-		"Chocolate Panel",
-		"Chocolate Microblock",
-		"chocolate",
-		default.node_sound_defaults()
-	)
-	
-	stairsplus.register_stair_and_slab_and_panel_and_micro(
-		"easter_eggs", "chocolate_dark", "easter_eggs:chocolate_block_dark",
-		{oddly_breakable_by_hand = 3},
-		{"easter_eggs_chocolate_block_dark.png"},
-		"Dark Chocolate Stairs",
-		"Dark Chocolate Corner",
-		"Dark Chocolate Slab",
-		"Dark Chocolate Wall",
-		"Dark Chocolate Panel",
-		"Dark Chocolate Microblock",
-		"chocolate_dark",
-		default.node_sound_defaults()
-	)
+	for _, v in ipairs({ "Dark", "Milk", "White" }) do
+		stairsplus:register_all(
+			"easter_eggs",
+			"chocolate_" .. string.lower(v),
+			"easter_eggs:chocolate_block_" .. string.lower(v),
+			{
+				groups = { oddly_breakable_by_hand = 3 },
+				tiles = { "easter_eggs_chocolate_block_" .. string.lower(v) .. ".png" },
+				description = v .. " Chocolate",
+				sounds = default.node_sound_defaults()
+			}
+		)
+	end
 elseif minetest.global_exists("stairs") then
-	stairs.register_stair_and_slab(
-		"chocolate",
-		"easter_eggs:chocolate_block",
-		{oddly_breakable_by_hand = 3},
-		{"easter_eggs_chocolate_block.png"},
-		"Chocolate Stair",
-		"Chocolate Slab",
-		default.node_sound_defaults()
-	)
-	
-	stairs.register_stair_and_slab(
-		"chocolate_dark",
-		"easter_eggs:chocolate_block_dark",
-		{oddly_breakable_by_hand = 3},
-		{"easter_eggs_chocolate_block_dark.png"},
-		"Dark Chocolate Stair",
-		"Dark Chocolate Slab",
-		default.node_sound_defaults()
-	)
+	for _, v in ipairs({ "Dark", "Milk", "White" }) do
+		stairs.register_stair_and_slab(
+			"chocolate_" .. string.lower(v),
+			"easter_eggs:chocolate_block_" .. string.lower(v),
+			{ oddly_breakable_by_hand = 3 },
+			{ "easter_eggs_chocolate_block_" .. string.lower(v) .. ".png" },
+			v .. " Chocolate Stair",
+			v .. " Chocolate Slab",
+			default.node_sound_defaults()
+		)
+	end
 end
 
 if minetest.global_exists("walls") then
-	walls.register("easter_eggs:chocolate_wall", "Chocolate Wall", "easter_eggs_chocolate_block.png",
-		"easter_eggs:chocolate_block", default.node_sound_defaults())
-		
-	walls.register("easter_eggs:chocolate_wall_dark", "Dark Chocolate Wall", "easter_eggs_chocolate_block_dark.png",
-		"easter_eggs:chocolate_block_dark", default.node_sound_defaults())
+	for _, v in ipairs({ "Dark", "Milk", "White" }) do
+		walls.register(
+			"easter_eggs:wall_chocolate_" .. string.lower(v),
+			v .. " Chocolate Wall",
+			"easter_eggs_chocolate_block_" .. string.lower(v) .. ".png",
+			"easter_eggs:chocolate_block",
+			default.node_sound_defaults()
+		)
+	end
 end
