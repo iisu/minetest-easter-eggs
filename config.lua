@@ -18,7 +18,7 @@ LOOT_SIZE = 4		--maximum number of different item types per egg
 USE_OBJ = true		--disabling this option will make the golden eggs use a plantlike drawtype instead of the default 3D model
 
 --eggs spawn config
-ES_ENABLED = true
+ES_ENABLED = false
 ES_DENSITY = 20		--number of eggs dropped around player
 ES_RADIUS = 50		--area around the player where the eggs drop
 					--please note that statistically most eggs will spawn near ES_RADIUS/2 nodes away from player
