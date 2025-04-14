@@ -4,10 +4,9 @@
 ]]
 
 dofile(minetest.get_modpath("easter_eggs") .. "/config.lua")
-dofile(minetest.get_modpath("easter_eggs") .. "/loot_pool.lua")
-so_affected_players = {}
-
 chocolate_types = { "Dark", "Milk", "White" }
+
+so_affected_players = {}
 
 lp_index = {}
 for i, _ in pairs(loot_pool) do
