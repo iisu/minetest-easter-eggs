@@ -7,6 +7,8 @@ dofile(minetest.get_modpath("easter_eggs") .. "/config.lua")
 dofile(minetest.get_modpath("easter_eggs") .. "/loot_pool.lua")
 so_affected_players = {}
 
+chocolate_types = { "Dark", "Milk", "White" }
+
 lp_index = {}
 for i, _ in pairs(loot_pool) do
 	table.insert(lp_index, i)
@@ -70,67 +72,43 @@ function eat_egg(itemstack, player, pointed_thing)
 	return itemstack
 end
 
-minetest.register_craftitem("easter_eggs:chocolate_egg", {
-	description = "Chocolate egg",
-	inventory_image = "easter_eggs_chocolate_egg.png",
-	on_use = eat_egg
-})
-
-minetest.register_craftitem("easter_eggs:chocolate_egg_dark", {
-	description = "Dark chocolate egg",
-	inventory_image = "easter_eggs_chocolate_egg_dark.png",
-	on_use = eat_egg	
-})
-
-minetest.register_node("easter_eggs:chocolate_block", {
-	description = "Chocolate block",
-	drawtype = "normal",
-	tiles = { "easter_eggs_chocolate_block.png" },
-	groups = { oddly_breakable_by_hand = 3 },
-	sounds = default.node_sound_defaults()
-})
-
-minetest.register_node("easter_eggs:chocolate_block_dark", {
-	description = "Dark chocolate block",
-	tiles = {"easter_eggs_chocolate_block_dark.png"},
-	groups = {oddly_breakable_by_hand = 3},
-	sounds = default.node_sound_defaults()
-})
-
-minetest.register_craft({
-	output = "easter_eggs:chocolate_block",
-	recipe = {
-		{ "easter_eggs:chocolate_egg", "easter_eggs:chocolate_egg", "easter_eggs:chocolate_egg" },
-		{ "easter_eggs:chocolate_egg", "easter_eggs:chocolate_egg", "easter_eggs:chocolate_egg" },
-		{ "easter_eggs:chocolate_egg", "easter_eggs:chocolate_egg", "easter_eggs:chocolate_egg" }
-	}
-})
-
-minetest.register_craft({
-	output = "easter_eggs:chocolate_block_dark",
-	recipe = {
-		{ "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark" },
-		{ "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark" },
-		{ "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark", "easter_eggs:chocolate_egg_dark" }
-	}
-})
-
-minetest.register_craft({
-	output = "easter_eggs:chocolate_egg 9",
-	recipe = {
-		{ "easter_eggs:chocolate_block" }
-	}
-})
-
-minetest.register_craft({
-	output = "easter_eggs:chocolate_egg_dark 9",
-	recipe = {
-		{ "easter_eggs:chocolate_block_dark" }
-	}
-})
+for _, v in ipairs(chocolate_types) do
+	local egg = "easter_eggs:chocolate_egg_" .. string.lower(v)
+	local block = "easter_eggs:chocolate_block_" .. string.lower(v)
+	
+	minetest.register_craftitem(egg, {
+		description = v .. " Chocolate Egg",
+		inventory_image = "easter_eggs_chocolate_egg_" .. string.lower(v) .. ".png",
+		on_use = eat_egg
+	})
+	
+	minetest.register_node(block, {
+		description = v .. " Chocolate Block",
+		drawtype = "normal",
+		tiles = { "easter_eggs_chocolate_block_" .. string.lower(v) .. ".png" },
+		groups = { oddly_breakable_by_hand = 3 },
+		sounds = default.node_sound_defaults()
+	})
+	
+	minetest.register_craft({
+		output = block,
+		recipe = {
+			{ egg, egg, egg },
+			{ egg, egg, egg },
+			{ egg, egg, egg }
+		}
+	})
+	
+	minetest.register_craft({
+		output = egg .. " 9",
+		recipe = {
+			{ block }
+		}
+	})
+end
 
 minetest.register_node("easter_eggs:gold_egg", {
-	description = "Gold egg",
+	description = "Gold Egg",
 	drawtype = USE_OBJ and "mesh" or "plantlike",
 	mesh = "easter_eggs_gold_egg.obj",
 	tiles = USE_OBJ and { "easter_eggs_gold.png" } or { "easter_eggs_gold_egg.png" },
@@ -175,9 +153,11 @@ function easter_eggs_spawn()
 	local f
 	
 	for _, player in ipairs(minetest.get_connected_players()) do
-		item = "easter_eggs:" .. (math.random(100) == 1 and "gold_egg" or (
-			math.random(2) == 1 and "chocolate_egg" or "chocolate_egg_dark"
-		))
+		item = "easter_eggs:" .. (
+			math.random(100) == 1
+				and "gold_egg"
+				or ("chocolate_egg_" .. string.lower(chocolate_types[math.random(#chocolate_types)]))
+			)
 		
 		pos = player:getpos()
 		pos_r = math.random()												-- 0 <= pos_r <= 1
