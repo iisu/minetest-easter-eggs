@@ -1,7 +1,14 @@
+v. 2.0
+- Added white chocolate.
+- Renamed Chocolate eggs/blocks to Milk Chocolate Eggs/Blocks (changed itemstrings accordingly). Renamed all items so that each word is capitalized.
+- Fixed stairsplus support.
+- Merged loot_pool.lua into config.lua, tweaked config.lua, disabled eggs spawn by default.
+- Fixed README.md.
+
 v. 1.0
-- Renamed 'sugar overdose' to 'sugar rush'
-- Moved golden eggs' loot pool config to loot_pool.lua
-- Minor changes to README.md
+- Renamed 'sugar overdose' to 'sugar rush'.
+- Moved golden eggs' loot pool config to loot_pool.lua.
+- Minor changes to README.md.
 - Added stairs etc.
 
 v. 0.2.1
